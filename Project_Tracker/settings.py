@@ -75,7 +75,8 @@ ROOT_URLCONF = 'Project_Tracker.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.DjangoTemplates',
+        # Исправлено: "django" в пути написано со строчной буквы
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
