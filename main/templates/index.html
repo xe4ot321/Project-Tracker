@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Project Tracker</title>
+    <style>
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 12px;
+            padding: 12px 16px;
+            background-color: #f2f2f2;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .top-bar form {
+            margin: 0;
+        }
+
+        .task-list {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .task-card {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 12px 16px;
+            width: 250px;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="top-bar">
+        <span>{{ user.username }}</span>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Выйти</button>
+        </form>
+    </header>
+    <div class="container">
+        <form method="post" action="/create_task/">
+            {% csrf_token %}
+            <p>Name<br><input id="name" name="name" type="text"></p>
+            <p>Description<br><textarea id="description" name="description" rows="3"></textarea></p>
+
+            <p>Project<br>
+                <select name="project" class="project">
+                    <option value="studies">Studies</option>
+                    <option value="projects">Projects</option>
+                    <option value="personal">Personal</option>
+                </select>
+            </p>
+
+            <p>Priority<br>
+                <select name="priority">
+                    <option value="short">Short</option>
+                    <option value="average">Average</option>
+                    <option value="high">High</option>
+                </select>
+            </p>
+
+            <p>Date<br><input id="date" name="date" type="date"></p>
+            <input type="submit" value="Send" />
+        </form>
+        <div class="task-list">
+            {% for task in tasks %}
+            <div class="task-card">
+                <h3>{{ task.name }}</h3>
+                <p>{{ task.description }}</p>
+                <p><strong>Проект:</strong> {{ task.get_project_display }}</p>
+                <p><strong>Приоритет:</strong> {{ task.get_priority_display }}</p>
+                {% if task.date %}
+                <p><strong>Дата:</strong> {{ task.date }}</p>
+                {% endif %}
+            </div>
+            {% empty %}
+            <p>Задач пока нет.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Войти</button>
+</form>
+
+{% if google_oauth_configured %}
+    <form method="post" action="{% url 'google_login' %}">
+        {% csrf_token %}
+        <button type="submit">Войти через Google</button>
+    </form>
+{% endif %}
+
+{% if form.errors %}
+    <p>Неверный логин или пароль.</p>
+{% endif %}
